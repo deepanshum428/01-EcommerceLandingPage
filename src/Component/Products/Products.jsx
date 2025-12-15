@@ -1,4 +1,4 @@
-import { Heart, Minus, Plus, Trash } from "lucide-react";
+import { Check, Heart, Minus, Plus, Trash } from "lucide-react";
 import { ShopContext } from "../../Context/shopContext";
 import { useContext } from "react";
 
@@ -11,6 +11,7 @@ export const Products = (props) => {
     incrementQuantity,
     decrementQuantity,
     addToWishlist,
+    wishlist,
     // clearCart,
   } = useContext(ShopContext);
 
@@ -28,12 +29,20 @@ export const Products = (props) => {
               key={product.id}
               className="border rounded-lg p-4 shadow-sm relative hover:shadow-md transition"
             >
-              <button className="absolute top-5 right-5 text-red-500 text-xl">
-                <Heart
-                  className="cursor-pointer"
-                  onClick={() => addToWishlist(product)}
-                />
-              </button>
+              <div className="relative">
+                <button className="absolute top-5 right-5 text-red-500 text-xl">
+                  <Heart
+                    onClick={() => addToWishlist(product)}
+                    className={`w-6 h-6 ${
+                      wishlist ? " text-red-500" : "text-gray-400"
+                    }`}
+                  />
+
+                  {wishlist.some((wl) => wl.id === product.id) && (
+                    <Check className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full text-green-600" />
+                  )}
+                </button>
+              </div>
 
               <img
                 src={product.image}
@@ -44,7 +53,6 @@ export const Products = (props) => {
               <h3 className="mt-3 text-lg font-semibold">{product.name}</h3>
 
               <p className="text-green-600 font-semibold">{product.price}</p>
-
               {cart.find((p) => p.id === product.id) ? (
                 <div className="bg-orange-500 text-white w-full py-2 mt-3 rounded-md font-semibold">
                   <div className="flex justify-around">
