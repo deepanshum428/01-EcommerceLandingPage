@@ -2,17 +2,22 @@ import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import logo from "../../assets/logo.png";
 import googleStore from "../../assets/GooglePlayStore.png";
 import appleStore from "../../assets/AppleStore.png";
+import { NavLink } from "react-router-dom";
 
 export default function Footer() {
   return (
     <footer className="bg-white border-t mt-10">
       <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
-        <div>
-          <img src={logo} alt="logo" className="w-32 mb-4" />
-          <p className="text-gray-700 mb-2">69 Selous Ave, Harare, Zimbabwe</p>
-          <p className="text-gray-700 mb-2">Support (+263) 03 0000052</p>
-          <p className="text-blue-600 cursor-pointer">info@demo.com</p>
-        </div>
+        <NavLink to="/">
+          <div>
+            <img src={logo} alt="logo" className="w-32 mb-4" />
+            <p className="text-gray-700 mb-2">
+              69 Selous Ave, Harare, Zimbabwe
+            </p>
+            <p className="text-gray-700 mb-2">Support (+263) 03 0000052</p>
+            <p className="text-blue-600 cursor-pointer">info@demo.com</p>
+          </div>
+        </NavLink>
 
         <div>
           <h3 className="font-bold text-lg mb-3 text-gray-700">Help Center</h3>
