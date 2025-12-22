@@ -1,21 +1,43 @@
 import { createContext, useEffect, useState } from "react";
-import { getProducts } from "../data/product";
-import { getCart, saveCart } from "../utils/cartStorage";
+// import { getProducts } from "../data/product";
+import {
+  getCart,
+  getWishlist,
+  saveCart,
+  saveWishlist,
+} from "../utils/cartStorage";
 
 export const ShopContext = createContext(null);
 
 export const ShopProvider = ({ children }) => {
-  const [products] = useState(getProducts());
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [searchBar, setSearchBar] = useState([]);
 
   useEffect(() => {
-    setCart(getCart());
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((res) => setProducts(res));
+  }, []);
+
+  useEffect(() => {
+    const value = getCart();
+    if (value && Array.isArray(value) && value.length > 0) setCart(value);
   }, []);
 
   useEffect(() => {
     saveCart(cart);
   }, [cart]);
+
+  useEffect(() => {
+    const value = getWishlist();
+    if (value && Array.isArray(value) && value.length > 0) setWishlist(value);
+  }, []);
+
+  useEffect(() => {
+    saveWishlist(wishlist);
+  }, [wishlist]);
 
   const addToWishlist = (product) => {
     setWishlist((prev) => {
@@ -23,9 +45,9 @@ export const ShopProvider = ({ children }) => {
       return exists ? prev : [...prev, product];
     });
   };
-  const removeWishList = (product) => {
+  const removeFromWishlist = (id) => {
     setWishlist((prev) => {
-      const updated = prev.filter((p) => p.id !== product.id);
+      const updated = prev.filter((l) => l.id !== id);
       return updated;
     });
   };
@@ -87,8 +109,9 @@ export const ShopProvider = ({ children }) => {
         decrementQuantity,
         wishlist,
         addToWishlist,
-        removeWishList,
-        // clearCart,
+        removeFromWishlist,
+        searchBar,
+        setSearchBar,
       }}
     >
       {children}

@@ -1,18 +1,19 @@
-import { Check, Heart, Minus, Plus, Trash } from "lucide-react";
+import { Check, CircleCheckBig, Heart, Minus, Plus, Trash } from "lucide-react";
 import { ShopContext } from "../../Context/shopContext";
 import { useContext } from "react";
 
 export const Products = (props) => {
   const {
-    products,
     cart,
     addToCart,
+    products,
     removeFromCart,
     incrementQuantity,
     decrementQuantity,
     addToWishlist,
     wishlist,
-    // clearCart,
+    removeFromWishlist,
+    searchBar,
   } = useContext(ShopContext);
 
   return (
@@ -24,73 +25,95 @@ export const Products = (props) => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="border rounded-lg p-4 shadow-sm relative hover:shadow-md transition"
-            >
-              <div className="relative">
-                <button className="absolute top-5 right-5 text-red-500 text-xl">
-                  <Heart
-                    onClick={() => addToWishlist(product)}
-                    className={`w-6 h-6 ${
-                      wishlist ? " text-red-500" : "text-gray-400"
-                    }`}
+          {products
+            .filter((p) => !searchBar || p.title.includes(searchBar))
+            .map((product) => {
+              const wishlistItem = wishlist.find((wl) => wl.id === product.id);
+              console.log(wishlistItem);
+
+              return (
+                <div
+                  key={product.id}
+                  className="border rounded-lg p-4 shadow-sm relative hover:shadow-md transition flex flex-col justify-between"
+                >
+                  <div className="fix">
+                    {wishlistItem ? (
+                      <button className="absolute top-5 right-5 text-red-500 text-xl">
+                        <Heart
+                          onClick={() => removeFromWishlist(wishlistItem.id)}
+                          className={`w-6 h-6  fill-red-500`}
+                        />
+                      </button>
+                    ) : (
+                      <button className="absolute top-5 right-5 text-red-500 text-xl">
+                        <Heart
+                          onClick={() => addToWishlist(product)}
+                          className={`w-6 h-6 text-red-500`}
+                        />
+                      </button>
+                    )}
+                  </div>
+
+                  <img
+                    src={product.image}
+                    className="w-full h-40 object-contain"
+                    alt="product image"
                   />
 
-                  {wishlist.some((wl) => wl.id === product.id) && (
-                    <Check className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full text-green-600" />
-                  )}
-                </button>
-              </div>
+                  <h3 className="mt-3 text-lg font-semibold">
+                    {product.title}
+                  </h3>
 
-              <img
-                src={product.image}
-                className="w-full h-40 object-contain"
-                alt="product image"
-              />
-
-              <h3 className="mt-3 text-lg font-semibold">{product.name}</h3>
-
-              <p className="text-green-600 font-semibold">{product.price}</p>
-              {cart.find((p) => p.id === product.id) ? (
-                <div className="bg-orange-500 text-white w-full py-2 mt-3 rounded-md font-semibold">
-                  <div className="flex justify-around">
-                    <Trash
-                      className="bg-red-500 px-0.5 py-0.5 cursor-pointer"
-                      onClick={() =>
-                        removeFromCart(cart.find((p) => p.id === product.id).id)
-                      }
-                    />
-                    <span>
-                      {cart.find((p) => p.id === product.id).quantity}
-                    </span>
-                    <div className="flex gap-2">
-                      <Minus
-                        className="bg-red-500 px-0.5 py-0.5 cursor-pointer"
-                        onClick={() => {
-                          decrementQuantity(product.id, -1);
-                        }}
-                      />
-                      <Plus
-                        className="bg-green-500 px-0.5 py-0.5 cursor-pointer"
-                        onClick={() => {
-                          incrementQuantity(product.id);
-                        }}
-                      />
+                  <p className="text-green-600 font-semibold">
+                    ${product.price}
+                  </p>
+                  {cart.find((p) => p.id === product.id) ? (
+                    <div className="gap-1">
+                      <div className="bg-orange-500 text-white w-full py-2 mt-3 rounded-md font-semibold">
+                        <div className="flex justify-around">
+                          <Trash
+                            className="bg-red-500 px-0.5 py-0.5 cursor-pointer"
+                            onClick={() =>
+                              removeFromCart(
+                                cart.find((p) => p.id === product.id).id
+                              )
+                            }
+                          />
+                          <span>
+                            {cart.find((p) => p.id === product.id).quantity}
+                          </span>
+                          <div className="flex gap-2">
+                            <Minus
+                              className="bg-red-500 px-0.5 py-0.5 cursor-pointer"
+                              onClick={() => {
+                                decrementQuantity(product.id, -1);
+                              }}
+                            />
+                            <Plus
+                              className="bg-green-500 px-0.5 py-0.5 cursor-pointer"
+                              onClick={() => {
+                                incrementQuantity(product.id);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-green-500 flex text-sm gap-1">
+                        <CircleCheckBig />
+                        <p>Added to cart</p>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="bg-orange-500 text-white w-full py-2 mt-3 rounded-md font-semibold cursor-pointer"
+                    >
+                      ADD TO CART
+                    </button>
+                  )}
                 </div>
-              ) : (
-                <button
-                  onClick={() => addToCart(product)}
-                  className="bg-orange-500 text-white w-full py-2 mt-3 rounded-md font-semibold cursor-pointer"
-                >
-                  ADD TO CART
-                </button>
-              )}
-            </div>
-          ))}
+              );
+            })}
         </div>
       </section>
     </>
