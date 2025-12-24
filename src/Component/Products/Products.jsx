@@ -14,6 +14,7 @@ export const Products = (props) => {
     wishlist,
     removeFromWishlist,
     searchBar,
+    loading,
   } = useContext(ShopContext);
 
   return (
@@ -21,7 +22,12 @@ export const Products = (props) => {
       <section className="w-full px-4 md:px-10 py-6">
         <div className="mb-4">
           <h2 className="text-2xl font-bold">Special Products For You</h2>
-          <p className="text-gray-500 text-sm">Special Products For You</p>
+          <p className="text-gray-500 text-sm">
+            Special Products For You{" "}
+            <span className="text-green-500 font-semibold">
+              {loading ? "is loading..." : ""}
+            </span>
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5">
@@ -29,7 +35,7 @@ export const Products = (props) => {
             .filter((p) => !searchBar || p.title.includes(searchBar))
             .map((product) => {
               const wishlistItem = wishlist.find((wl) => wl.id === product.id);
-              console.log(wishlistItem);
+              // console.log(wishlistItem);
 
               return (
                 <div

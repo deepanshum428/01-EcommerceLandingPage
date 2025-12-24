@@ -14,11 +14,27 @@ export const ShopProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [searchBar, setSearchBar] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoaading] = useState(true);
+
+  const getData = async () => {
+    try {
+      const res = await fetch("https://fakestoreapi.com/products");
+      if (!res.ok) {
+        throw new Error("Server error");
+      } else {
+        const data = await res.json();
+        setProducts(data);
+      }
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoaading(false);
+    }
+  };
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((res) => setProducts(res));
+    getData();
   }, []);
 
   useEffect(() => {
@@ -112,6 +128,8 @@ export const ShopProvider = ({ children }) => {
         removeFromWishlist,
         searchBar,
         setSearchBar,
+        error,
+        loading,
       }}
     >
       {children}

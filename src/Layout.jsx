@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Component/Header/Header.jsx";
 import { useEffect } from "react";
 import Footer from "./Component/Footer.jsx/Footer.jsx";
+import ErrorFetch from "./Component/ErrorFetch.jsx";
 
 export const Layout = (props) => {
   const location = useLocation();
@@ -20,6 +21,7 @@ export const Layout = (props) => {
 
   return (
     <div>
+      <ErrorFetch />
       <Header />
       <Outlet />
       <Footer />
