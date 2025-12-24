@@ -9,7 +9,7 @@ const ErrorFetch = (props) => {
       {error && (
         <div>
           <p className="text-red-500 text-center">
-            Failed to fetch check your internet once
+            Failed to fetch product data!
           </p>
         </div>
       )}

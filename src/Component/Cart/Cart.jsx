@@ -6,7 +6,7 @@ const Cart = (props) => {
   const { cart, removeFromCart, incrementQuantity, decrementQuantity } =
     useContext(ShopContext);
 
-  console.log(cart);
+  // console.log(cart);
 
   const calculateTotal = () => {};
 

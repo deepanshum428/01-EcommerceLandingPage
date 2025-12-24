@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.png"; 
 import { Heart, Search, ShoppingCart, User } from "lucide-react";
 import { ShopContext } from "../../Context/shopContext";
 import { NavLink } from "react-router-dom";
@@ -19,7 +19,7 @@ const Header = (props) => {
             <div className="flex items-center gap-2 ">
               <img src={logo} alt="" className="w-25 " />
             </div>
-          </NavLink>
+          </NavLink>                        
 
           <div className="flex items-center w-full max-w-xl mx-6 rounded-md overflow-hidden border border-gray-300">
             <input
