@@ -3,7 +3,8 @@ import { Heart, ShoppingCart, Trash2 } from "lucide-react";
 import { ShopContext } from "../../Context/shopContext";
 
 const WishList = () => {
-  const { wishlist, addToCart, removeFromWishlist } = useContext(ShopContext);
+  const { wishlist, cart, addToCart, removeFromWishlist } =
+    useContext(ShopContext);
 
   // console.log(wishlist);
 
@@ -38,12 +39,18 @@ const WishList = () => {
             <p className="text-green-600 font-bold">₹{list.price}</p>
 
             <div className="flex gap-2 mt-4">
-              <button
-                onClick={() => addToCart(list)}
-                className="flex-1 bg-orange-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <ShoppingCart size={18} /> Add to Cart
-              </button>
+              {cart.find((item) => item.id === list.id) ? (
+                <button className="flex-1 bg-orange-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 cursor-pointer">
+                  <ShoppingCart size={18} /> Item Already added in cart
+                </button>
+              ) : (
+                <button
+                  onClick={() => addToCart(list)}
+                  className="flex-1 bg-orange-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <ShoppingCart size={18} /> Add to Cart
+                </button>
+              )}
 
               <button
                 onClick={() => removeFromWishlist(list.id)}
