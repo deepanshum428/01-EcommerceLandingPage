@@ -7,6 +7,26 @@ import banner2 from "../../assets/banner-2.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+const NextArrow = ({ onClick }) => (
+  <div
+    onClick={onClick}
+    className="absolute right-3 top-1/2 -translate-y-1/2 z-10
+               bg-white text-black p-2 rounded-full shadow cursor-pointer"
+  >
+    ❯
+  </div>
+);
+
+const PrevArrow = ({ onClick }) => (
+  <div
+    onClick={onClick}
+    className="absolute left-3 top-1/2 -translate-y-1/2 z-10
+               bg-white text-black p-2 rounded-full shadow cursor-pointer"
+  >
+    ❮
+  </div>
+);
+
 const BannerSlider = () => {
   const settings = {
     dots: true,
@@ -16,21 +36,23 @@ const BannerSlider = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
-    arrows: false,
+    arrows: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
 
   const banners = [banner1, banner2];
 
   return (
-    <div className="w-full bg-gray-100 py-8">
+    <div className="w-full bg-gray-100 py-8 rounded-xl">
       <div className="w-full max-w-[1200px] mx-auto px-4 rounded-xl">
-        <Slider {...settings}>
+        <Slider className="text-black rounded-xl overflow-hidden" {...settings}>
           {banners.map((img, i) => (
             <div key={i}>
               <img
                 src={img}
                 alt={`banner-${i}`}
-                className="w-full h-[300px] object-cover rounded-xl"
+                className="w-full h-[300px] object-cover"
               />
             </div>
           ))}
