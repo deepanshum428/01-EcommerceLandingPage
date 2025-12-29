@@ -41,7 +41,7 @@ const WishList = () => {
             <div className="flex gap-2 mt-4">
               {cart.find((item) => item.id === list.id) ? (
                 <button className="flex-1 bg-orange-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 cursor-pointer">
-                  <ShoppingCart size={18} /> Item Already added in cart
+                  <ShoppingCart size={18} /> Item already added in cart
                 </button>
               ) : (
                 <button
